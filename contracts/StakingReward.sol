@@ -110,6 +110,18 @@ contract StakingRewards {
         stakingToken.transfer(msg.sender, _amount);
     }
 
+    /// @notice 用户取消质押（取回本金）
+    /// @param amount 要提取的质押数量
+    function unstake(uint256 amount) external updateReward(msg.sender) {
+        require(amount > 0, "Cannot unstake 0");
+        require(balanceOf[msg.sender] >= amount, "Insufficient staked balance");
+        totalSupply -= amount;
+        balanceOf[msg.sender] -= amount;
+
+        // 将质押的 Token 转回用户
+        stakingToken.transfer(msg.sender, amount);
+    }
+
     /// @notice 获取当前奖励可用的最后时间
     function lastTimeRewardApplicable() public view returns (uint256) {
         return _min(block.timestamp, finishAt);
