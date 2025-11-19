@@ -101,15 +101,6 @@ contract StakingRewards {
         totalSupply += _amount;
     }
 
-    /// @notice 用户提取质押代币
-    /// @param _amount 提取数量
-    function withdraw(uint256 _amount) external updateReward(msg.sender) {
-        require(_amount > 0, "amount = 0");
-        balanceOf[msg.sender] -= _amount;
-        totalSupply -= _amount;
-        stakingToken.transfer(msg.sender, _amount);
-    }
-
     /// @notice 用户取消质押（取回本金）
     /// @param amount 要提取的质押数量
     function unstake(uint256 amount) external updateReward(msg.sender) {
