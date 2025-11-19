@@ -89,7 +89,6 @@ contract StakingRewards {
             "reward amount > balance"
         );
         finishAt = block.timestamp + duration;
-        updatedAt = block.timestamp;
     }
 
     /// @notice 用户质押代币
