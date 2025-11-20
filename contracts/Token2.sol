@@ -18,6 +18,7 @@ contract Token2 is ERC20 {
     /// @param amount 回收数量
     function recoverERC20(address token, uint256 amount) external {
         require(msg.sender == owner, "not owner");
+        require(token != address(this), "Cannot recover reward token");
         IERC20(token).transfer(owner, amount);
     }
 }

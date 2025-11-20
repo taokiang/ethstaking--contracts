@@ -76,11 +76,12 @@ contract StakingRewards {
         onlyOwner
         updateReward(address(0))
     {
+        require(_amount > 0, "amount = 0");
+
         if (block.timestamp > finishAt) {
             rewardRate = _amount / duration;
         } else {
-            uint256 remainingRewards = rewardRate *
-                (finishAt - block.timestamp);
+            uint256 remainingRewards = rewardRate * (finishAt - block.timestamp);
             rewardRate = (remainingRewards + _amount) / duration;
         }
         require(rewardRate > 0, "reward rate = 0");
@@ -88,7 +89,9 @@ contract StakingRewards {
             rewardRate * duration <= rewardsToken.balanceOf(address(this)),
             "reward amount > balance"
         );
-        finishAt = block.timestamp + duration;
+        if (block.timestamp >= finishAt) {
+            finishAt = block.timestamp + duration;
+        }
     }
 
     /// @notice 用户质押代币
