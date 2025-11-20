@@ -65,7 +65,7 @@ contract StakingRewards {
     /// @notice 设置奖励发放周期
     /// @param _duration 奖励周期（秒）
     function setRewardsDuration(uint256 _duration) external onlyOwner {
-        rrequire(block.timestamp >= finishAt, "Previous rewards period must be complete before changing duration");
+        require(block.timestamp >= finishAt, "Previous rewards period must be complete before changing duration");
         duration = _duration;
     }
 
