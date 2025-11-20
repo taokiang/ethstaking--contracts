@@ -65,7 +65,7 @@ contract StakingRewards {
     /// @notice 设置奖励发放周期
     /// @param _duration 奖励周期（秒）
     function setRewardsDuration(uint256 _duration) external onlyOwner {
-        require(finishAt < block.timestamp, "reward duration not finished");
+        rrequire(block.timestamp >= finishAt, "Previous rewards period must be complete before changing duration");
         duration = _duration;
     }
 
@@ -101,15 +101,15 @@ contract StakingRewards {
     }
 
     /// @notice 用户取消质押（取回本金）
-    /// @param amount 要提取的质押数量
-    function unstake(uint256 amount) external updateReward(msg.sender) {
-        require(amount > 0, "Cannot unstake 0");
-        require(balanceOf[msg.sender] >= amount, "Insufficient staked balance");
-        totalSupply -= amount;
-        balanceOf[msg.sender] -= amount;
+    /// @param _amount 要提取的质押数量
+    function unstake(uint256 _amount) external updateReward(msg.sender) {
+        require(_amount > 0, "Cannot unstake 0");
+        require(balanceOf[msg.sender] >= _amount, "Insufficient staked balance");
+        totalSupply -= _amount;
+        balanceOf[msg.sender] -= _amount;
 
         // 将质押的 Token 转回用户
-        stakingToken.transfer(msg.sender, amount);
+        stakingToken.transfer(msg.sender, _amount);
     }
 
     /// @notice 获取当前奖励可用的最后时间
