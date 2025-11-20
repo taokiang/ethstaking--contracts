@@ -105,9 +105,8 @@ contract StakingRewards {
     function unstake(uint256 _amount) external updateReward(msg.sender) {
         require(_amount > 0, "Cannot unstake 0");
         require(balanceOf[msg.sender] >= _amount, "Insufficient staked balance");
-        totalSupply -= _amount;
         balanceOf[msg.sender] -= _amount;
-
+        totalSupply -= _amount;
         // 将质押的 Token 转回用户
         stakingToken.transfer(msg.sender, _amount);
     }
